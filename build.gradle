@@ -1,0 +1,19 @@
+plugins {
+    id 'java'
+}
+
+jar.baseName = 'app'
+
+sourceCompatibility = 1.8
+
+repositories {
+    jcenter()
+}
+
+
+dependencies {
+
+    compile 'org.seleniumhq.selenium:htmlunit-driver:2.27'
+
+    testCompile 'junit:junit:4.12'
+}
