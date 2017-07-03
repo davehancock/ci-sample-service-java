@@ -1,16 +1,10 @@
-pipeline {
+node {
 
-    agent any
+    stage("Main build") {
 
-        stages{
+        checkout scm
 
-            docker.image('openjdk:8-jdk').inside {
-
-            stage ('Stage Checkout') {
-                 steps {
-                    checkout scm
-                 }
-            }
+        docker.image('openjdk:8-jdk').inside {
 
             stage ('Test') {
                 steps {
