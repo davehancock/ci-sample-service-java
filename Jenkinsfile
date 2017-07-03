@@ -2,9 +2,9 @@ pipeline {
 
     agent any
 
-    docker.image('openjdk:8-jdk').inside {
-
         stages{
+
+            docker.image('openjdk:8-jdk').inside {
 
             stage ('Stage Checkout') {
                  steps {
