@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id 'org.springframework.boot' version '1.5.4.RELEASE'
 }
 
 jar.baseName = 'app'
@@ -13,7 +14,12 @@ repositories {
 
 dependencies {
 
-    compile 'org.seleniumhq.selenium:htmlunit-driver:2.27'
+    compile 'org.springframework.boot:spring-boot-starter-web'
 
     testCompile 'junit:junit:4.12'
+}
+
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '4.0'
 }
