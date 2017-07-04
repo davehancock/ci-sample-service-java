@@ -9,6 +9,12 @@ node {
             sh './gradlew clean test'
             sh './gradlew build'
         }
+
+        sh 'ls -ltra'
+
+        // Maybe use the plugin for this instead?
+        docker --version
+        docker build -t test .
     }
 
 }
