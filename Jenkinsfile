@@ -11,7 +11,11 @@ node {
         }
     }
 
-
+    stage("Post Build){
+        steps {
+            echo 'done'
+        }
+    }
 
 
 }
