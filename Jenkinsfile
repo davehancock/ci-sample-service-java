@@ -1,6 +1,6 @@
 node {
 
-    stage("Main build") {
+    stage('Some Build') {
 
         steps {
             checkout scm
@@ -13,7 +13,7 @@ node {
         }
     }
 
-    stage("Post Build){
+    stage('Post Build') {
         steps {
             echo 'done'
         }
