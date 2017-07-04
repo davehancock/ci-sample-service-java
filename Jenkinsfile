@@ -12,15 +12,6 @@ node {
     }
 
 
-    stage("post build") {
 
-        steps{
-            sh 'ls -ltra'
-
-            // Maybe use the plugin for this instead?
-            docker --version
-            docker build -t test .
-        }
-    }
 
 }
