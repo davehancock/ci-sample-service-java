@@ -1,21 +1,14 @@
 node {
 
-    stage('Some Build') {
 
-        steps {
-            checkout scm
+    stage("Main build") {
 
-            // https://go.cloudbees.com/docs/cloudbees-documentation/cje-user-guide/index.html#docker-workflow
-            docker.image('openjdk:8-jdk').inside {
-                sh './gradlew clean test'
-                sh './gradlew build'
-            }
-        }
-    }
+        checkout scm
 
-    stage('Post Build') {
-        steps {
-            echo 'done'
+        // https://go.cloudbees.com/docs/cloudbees-documentation/cje-user-guide/index.html#docker-workflow
+        docker.image('openjdk:8-jdk').inside {
+            sh './gradlew clean test'
+            sh './gradlew build'
         }
     }
 
