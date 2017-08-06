@@ -1,6 +1,6 @@
 node {
 
-    stage("Main build") {
+    stage('Main build') {
 
         checkout scm
 
@@ -10,6 +10,9 @@ node {
             sh './gradlew build'
             pwd
             ls -ltra ./build/libs
+
+            def newApp = docker.build "daves125125/ci-sample-service:${env.BUILD_TAG}"
+            newApp.push()
         }
     }
 
@@ -19,11 +22,6 @@ node {
             pwd
             ls -ltra ./build/libs
         }
-    }
-
-    stage('Deploy') {
-          def newApp = docker.build "daves125125/ci-sample-service:${env.BUILD_TAG}"
-          newApp.push()
     }
 
 }
