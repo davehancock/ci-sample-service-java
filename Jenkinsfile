@@ -10,10 +10,13 @@ node {
             sh './gradlew build'
             sh 'pwd'
             sh 'ls -ltra ./build/libs'
-
-            def newApp = docker.build "daves125125/ci-sample-service:${env.BUILD_TAG}"
-            newApp.push()
         }
+
+        sh 'pwd'
+        sh 'ls -ltra ./build/libs'
+
+        def newApp = docker.build "daves125125/ci-sample-service:${env.BUILD_TAG}"
+        newApp.push()
     }
 
     stage('Test') {
