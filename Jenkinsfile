@@ -12,14 +12,8 @@ node {
     }
 
     stage('Test') {
-        steps {
-            echo 'Testing...'
-        }
-    }
-
-    stage('Deploy') {
-        steps {
-            echo 'Deploying...'
+        docker.image('bash').inside {
+            echo "Hello World"
         }
     }
 
