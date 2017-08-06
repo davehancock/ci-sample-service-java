@@ -1,6 +1,5 @@
 node {
 
-
     stage("Main build") {
 
         checkout scm
@@ -12,5 +11,16 @@ node {
         }
     }
 
+    stage('Test') {
+        steps {
+            echo 'Testing..'
+        }
+    }
+
+    stage('Deploy') {
+        steps {
+            echo 'Deploying....'
+        }
+    }
 
 }
