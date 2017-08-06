@@ -22,5 +22,4 @@ node {
             echo 'Deploying...'
         }
     }
-
 }
