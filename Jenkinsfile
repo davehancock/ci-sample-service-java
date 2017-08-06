@@ -19,8 +19,8 @@ node {
     stage('Test') {
         docker.image('bash').inside {
             echo "Hello World"
-            pwd
-            ls -ltra ./build/libs
+            sh 'pwd'
+            sh 'ls -ltra ./build/libs'
         }
     }
 
