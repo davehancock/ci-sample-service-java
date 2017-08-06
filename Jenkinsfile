@@ -13,7 +13,7 @@ node {
 
     stage('Test') {
         steps {
-            echo 'Testing..'
+            echo 'Testing...'
         }
     }
 
