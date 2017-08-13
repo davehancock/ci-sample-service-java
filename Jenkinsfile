@@ -1,11 +1,12 @@
 node {
 
+    def dockerBuild
+    def gitVars
     env.GRADLE_USER_HOME = "/cache"
 
-    def dockerBuild
     stage('Package') {
 
-        def gitVars = checkout scm
+        gitVars = checkout scm
 
         docker.image('openjdk:8-jdk').inside("-v /cache:/cache") {
             sh './gradlew compileJava'
@@ -16,12 +17,18 @@ node {
     }
 
     stage('Test') {
-        docker.image('openjdk:8-jdk').inside("-v /cache:/cache")  {
+        docker.image('openjdk:8-jdk').inside("-v /cache:/cache") {
             sh './gradlew test'
         }
     }
 
     stage('Deploy') {
+        when {
+            expression {
+                return $ { gitVars["GIT_BRANCH"] } == 'origin/master'
+            }
+        }
+
         docker.withRegistry('https://index.docker.io/v1/', 'docker-hub-login') {
             dockerBuild.push()
             dockerBuild.push 'latest'
