@@ -1,13 +1,13 @@
 node {
 
-    env.GRADLE_USER_HOME = ${pwd()}"/.gradle"
+    env.GRADLE_USER_HOME = "/gradlecache"
 
     def dockerBuild
     stage('Package') {
 
         def gitVars = checkout scm
 
-        docker.image('openjdk:8-jdk').inside {
+        docker.image('openjdk:8-jdk').inside("-v /gradlecache:/gradlecache") {
 
             echo 'envsetas: '${env.GRADLE_USER_HOME}
             sh './gradlew compileJava'
@@ -18,7 +18,7 @@ node {
     }
 
     stage('Test') {
-        docker.image('openjdk:8-jdk').inside {
+        docker.image('openjdk:8-jdk').inside("-v /gradlecache:/gradlecache")  {
             sh './gradlew test'
         }
     }
