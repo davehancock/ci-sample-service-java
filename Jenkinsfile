@@ -1,6 +1,6 @@
 node {
 
-    env.GRADLE_USER_HOME = "/tmp"
+    env.GRADLE_USER_HOME = "/foo"
 
     def dockerBuild
     stage('Package') {
