@@ -5,7 +5,7 @@ node {
     def dockerBuild
     stage('Main build') {
 
-        def gitVars = checkout ([$class: 'GitSCM'])
+        def gitVars = checkout scm
 
         // https://go.cloudbees.com/docs/cloudbees-documentation/cje-user-guide/index.html#docker-workflow
         docker.image('openjdk:8-jdk').inside {
