@@ -8,8 +8,6 @@ node {
         def gitVars = checkout scm
 
         docker.image('openjdk:8-jdk').inside("-v /cache:/cache") {
-
-            echo "envsetas: '${env.GRADLE_USER_HOME}"
             sh './gradlew compileJava'
             sh './gradlew assemble'
         }
