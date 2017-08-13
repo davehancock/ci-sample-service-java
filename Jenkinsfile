@@ -5,7 +5,7 @@ node {
     def dockerBuild
     stage('Main build') {
 
-        checkout scm
+        def gitVars = checkout ([$class: 'GitSCM'])
 
         // https://go.cloudbees.com/docs/cloudbees-documentation/cje-user-guide/index.html#docker-workflow
         docker.image('openjdk:8-jdk').inside {
@@ -18,7 +18,7 @@ node {
         sh 'pwd'
         sh 'ls -ltra ./build/libs'
 
-        dockerBuild = docker.build "daves125125/ci-sample-service:${env.BUILD_TAG}"
+        dockerBuild = docker.build "daves125125/ci-sample-service:${gitVars["GIT_COMMIT"]}"
     }
 
     stage('Test') {
