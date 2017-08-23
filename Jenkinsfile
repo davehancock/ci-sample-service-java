@@ -2,7 +2,7 @@ node {
 
     def dockerBuild
     def gitVars
-    env.GRADLE_USER_HOME = "/cache"
+    env.GRADLE_USER_HOME = "/cache/gradle"
 
     stage('Package') {
 
@@ -22,16 +22,24 @@ node {
         }
     }
 
-    stage('Deploy') {
+    stage('Deploy Snapshot') {
+        docker.withRegistry('https://index.docker.io/v1/', 'docker-hub-login') {
+            dockerBuild.push()
+        }
+    }
+
+    // TODO need put something when its not master - "stage has not steps"
+    stage('Deploy Latest') {
         when {
             expression {
                 return $ { gitVars["GIT_BRANCH"] } == 'origin/master'
             }
         }
-
-        docker.withRegistry('https://index.docker.io/v1/', 'docker-hub-login') {
-            dockerBuild.push()
-            dockerBuild.push 'latest'
+        steps {
+            docker.withRegistry('https://index.docker.io/v1/', 'docker-hub-login') {
+                echo 'Pushing docker images'
+                dockerBuild.push 'latest'
+            }
         }
     }
 
