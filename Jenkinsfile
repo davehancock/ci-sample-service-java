@@ -35,6 +35,7 @@ node {
                 return $ { gitVars["GIT_BRANCH"] } == 'origin/master'
             }
         }
+
         steps {
             docker.withRegistry('https://index.docker.io/v1/', 'docker-hub-login') {
                 echo 'Pushing docker images'
