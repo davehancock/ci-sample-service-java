@@ -1,8 +1,8 @@
 package com.djh.ci;
 
-import org.junit.Test;
 
-import static org.testng.Assert.assertEquals;
+import org.junit.Assert;
+import org.junit.Test;
 
 /**
  * @author David Hancock
@@ -15,7 +15,7 @@ public class ApplicationTest {
     public void someTest() {
 
         String response = application.sayHello();
-        assertEquals(response, "Hello!");
+        Assert.assertEquals(response, "Hello!");
     }
 
 }
