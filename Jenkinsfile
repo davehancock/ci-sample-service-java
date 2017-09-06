@@ -24,6 +24,7 @@ node {
 
     stage('Deploy Snapshot') {
         docker.withRegistry('https://index.docker.io/v1/', 'docker-hub-login') {
+            sh './gradlew test'
             dockerBuild.push()
         }
     }
