@@ -31,7 +31,7 @@ pipeline {
                     sh './gradlew assemble'
 
 
-                    echo $(gitVars["GIT_COMMIT"])
+                    echo gitVars["GIT_COMMIT"]
                     echo gitCommitVar
                 }
             }
