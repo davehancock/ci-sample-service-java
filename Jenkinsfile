@@ -4,7 +4,7 @@ pipeline {
     environment {
         GRADLE_USER_HOME = '/cache/gradle'
         HASH = 'unknown'
-        IMAGE = 'daves125125/ci-sample-service:'
+        IMAGE = 'daves125125/ci-sample-service'
     }
 
     stages {
