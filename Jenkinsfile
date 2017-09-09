@@ -27,23 +27,22 @@ pipeline {
                 sh './gradlew assemble'
             }
         }
-    }
 
-    stage('Docker Build') {
+        stage('Docker Build') {
 
-
-        agent {
-            dockerfile {
-                args "-v /tmp:/tmp -p 8000:8000"
+            agent {
+                dockerfile {
+                    args "-v /tmp:/tmp -p 8000:8000"
+                }
             }
-        }
 
-        steps {
-            sh """
+            steps {
+                sh """
                     docker build -t ${IMAGE} .
                     docker tag ${IMAGE} ${IMAGE}:${HASH}
                     docker push ${IMAGE}:${HASH}
                 """
+            }
         }
     }
 
