@@ -42,7 +42,7 @@ pipeline {
 
             agent {
                 dockerfile {
-                    label "daves125125/ci-sample-service:$gitCommitVar"
+                    label "daves125125/ci-sample-service"
                     args "-v /tmp:/tmp -p 8000:8000"
                 }
             }
