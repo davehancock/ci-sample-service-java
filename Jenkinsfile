@@ -1,10 +1,10 @@
 pipeline {
-    agent none
+    agent any
 
     environment {
         GRADLE_USER_HOME = '/cache/gradle'
-        gitVars = 'foo'
-        gitCommitVar = 'bar'
+        HASH = 'unknown'
+        IMAGE = 'daves125125/ci-sample-service:'
     }
 
     stages {
@@ -18,38 +18,33 @@ pipeline {
             }
 
             steps {
-                echo "Hello"
-
                 script {
                     gitVars = checkout scm
-                    gitCommitVar = gitVars["GIT_COMMIT"]
-
-                    sh './gradlew compileJava'
-                    sh './gradlew assemble'
-
-                    echo gitVars["GIT_COMMIT"]
-                    echo gitCommitVar
+                    HASH = gitVars["GIT_COMMIT"]
                 }
+
+                sh './gradlew compileJava'
+                sh './gradlew assemble'
             }
         }
-
-        stage('Docker Build') {
-
-
-            agent {
-                dockerfile {
-                    args "-v /tmp:/tmp -p 8000:8000"
-                }
-            }
-
-            steps {
-                echo 'Build Time'
-            }
-        }
-
-//        dockerBuild = docker.build "daves125125/ci-sample-service:${gitVars["GIT_COMMIT"]}"
-
     }
 
+    stage('Docker Build') {
+
+
+        agent {
+            dockerfile {
+                args "-v /tmp:/tmp -p 8000:8000"
+            }
+        }
+
+        steps {
+            sh """
+                    docker build -t ${IMAGE} .
+                    docker tag ${IMAGE} ${IMAGE}:${HASH}
+                    docker push ${IMAGE}:${HASH}
+                """
+        }
+    }
 
 }
