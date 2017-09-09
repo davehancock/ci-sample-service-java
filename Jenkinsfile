@@ -1,11 +1,14 @@
 pipeline {
     agent none
+
     stages {
         stage('Package') {
 
             agent {
-                docker 'openjdk:8-jdk'
-                args['-v /cache:/cache']
+                docker {
+                    image 'openjdk:8-jdk'
+                    args['-v /cache:/cache']
+                }
             }
 
             steps {
@@ -20,4 +23,5 @@ pipeline {
             }
         }
     }
+
 }
