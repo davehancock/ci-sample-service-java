@@ -13,12 +13,15 @@ pipeline {
 
             steps {
                 step {
-                    gitVars = checkout scm
 
-                    sh './gradlew compileJava'
-                    sh './gradlew assemble'
+                    script {
+                        gitVars = checkout scm
 
-                    dockerBuild = docker.build "daves125125/ci-sample-service:${gitVars["GIT_COMMIT"]}"
+                        sh './gradlew compileJava'
+                        sh './gradlew assemble'
+
+                        dockerBuild = docker.build "daves125125/ci-sample-service:${gitVars["GIT_COMMIT"]}"
+                    }
                 }
             }
         }
