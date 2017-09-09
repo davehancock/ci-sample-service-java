@@ -7,21 +7,21 @@ pipeline {
             agent {
                 docker {
                     image 'openjdk:8-jdk'
-                    args['-v /cache:/cache']
+                    args '-v /cache:/cache'
                 }
             }
 
             steps {
-                step {
 
-                    script {
-                        gitVars = checkout scm
+                echo "Hello"
 
-                        sh './gradlew compileJava'
-                        sh './gradlew assemble'
+                script {
+                    gitVars = checkout scm
 
-                        dockerBuild = docker.build "daves125125/ci-sample-service:${gitVars["GIT_COMMIT"]}"
-                    }
+                    sh './gradlew compileJava'
+                    sh './gradlew assemble'
+
+                    dockerBuild = docker.build "daves125125/ci-sample-service:${gitVars["GIT_COMMIT"]}"
                 }
             }
         }
