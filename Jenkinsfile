@@ -31,7 +31,7 @@ pipeline {
             }
         }
 
-        stage('Package') {
+        stage('Docker Build') {
 
 
             agent {
