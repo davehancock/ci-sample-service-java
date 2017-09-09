@@ -6,28 +6,32 @@ pipeline {
 
     stages {
         stage('Package') {
+            steps {
+                gitVars = checkout scm
 
-            gitVars = checkout scm
+                docker.image('openjdk:8-jdk').inside("-v /cache:/cache") {
+                    sh './gradlew compileJava'
+                    sh './gradlew assemble'
+                }
 
-            docker.image('openjdk:8-jdk').inside("-v /cache:/cache") {
-                sh './gradlew compileJava'
-                sh './gradlew assemble'
+                dockerBuild = docker.build "daves125125/ci-sample-service:${gitVars["GIT_COMMIT"]}"
             }
-
-            dockerBuild = docker.build "daves125125/ci-sample-service:${gitVars["GIT_COMMIT"]}"
         }
 
         stage('Test') {
-            docker.image('openjdk:8-jdk').inside("-v /cache:/cache") {
-                sh './gradlew test'
+            steps {
+                docker.image('openjdk:8-jdk').inside("-v /cache:/cache") {
+                    sh './gradlew test'
+                }
             }
         }
 
         stage('Deploy Snapshot') {
-
-            echo 'Deploying Snapshot...'
-            docker.withRegistry('https://index.docker.io/v1/', 'docker-hub-login') {
-                dockerBuild.push()
+            steps {
+                echo 'Deploying Snapshot...'
+                docker.withRegistry('https://index.docker.io/v1/', 'docker-hub-login') {
+                    dockerBuild.push()
+                }
             }
         }
 
