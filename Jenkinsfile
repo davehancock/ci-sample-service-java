@@ -2,7 +2,7 @@ pipeline {
     agent none
 
     environment {
-        env.GRADLE_USER_HOME = '/cache/gradle'
+        GRADLE_USER_HOME = '/cache/gradle'
     }
 
     stages {
