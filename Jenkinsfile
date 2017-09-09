@@ -4,6 +4,7 @@ pipeline {
     environment {
         GRADLE_USER_HOME = '/cache/gradle'
         gitVars = 'foo'
+        gitCommitVar = 'bar'
     }
 
     stages {
@@ -21,12 +22,17 @@ pipeline {
 
                 script {
                     echo gitVars
+                    echo gitCommitVar
+
                     gitVars = checkout scm
+                    gitCommitVar = gitVars["GIT_COMMIT"]
 
                     sh './gradlew compileJava'
                     sh './gradlew assemble'
 
-                    echo gitVars
+
+                    echo gitVars["GIT_COMMIT"]
+                    echo gitCommitVar
                 }
             }
         }
@@ -36,7 +42,7 @@ pipeline {
 
             agent {
                 dockerfile {
-                    label "daves125125/ci-sample-service"
+                    label "daves125125/ci-sample-service:$gitCommitVar"
                     args "-v /tmp:/tmp -p 8000:8000"
                 }
             }
