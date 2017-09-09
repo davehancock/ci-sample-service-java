@@ -21,15 +21,11 @@ pipeline {
                 echo "Hello"
 
                 script {
-                    echo gitVars
-                    echo gitCommitVar
-
                     gitVars = checkout scm
                     gitCommitVar = gitVars["GIT_COMMIT"]
 
                     sh './gradlew compileJava'
                     sh './gradlew assemble'
-
 
                     echo gitVars["GIT_COMMIT"]
                     echo gitCommitVar
@@ -47,8 +43,7 @@ pipeline {
             }
 
             steps {
-
-                echo gitVars
+                echo 'Build Time'
             }
         }
 
