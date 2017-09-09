@@ -30,7 +30,7 @@ pipeline {
 
         stage('Docker Build') {
 
-            agent { label "docker" }
+            agent any
 
             steps {
                 sh """
