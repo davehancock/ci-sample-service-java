@@ -1,4 +1,4 @@
-node {
+pipeline {
 
     def dockerBuild
     def gitVars
