@@ -1,5 +1,5 @@
 pipeline {
-    agent any
+    agent none
 
     environment {
         GRADLE_USER_HOME = '/cache/gradle'
@@ -30,11 +30,7 @@ pipeline {
 
         stage('Docker Build') {
 
-            agent {
-                dockerfile {
-                    args "-v /tmp:/tmp -p 8000:8000"
-                }
-            }
+            agent { label "docker" }
 
             steps {
                 sh """
