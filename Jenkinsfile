@@ -1,5 +1,10 @@
 pipeline {
-    agent none
+    agent {
+        docker {
+            image 'openjdk:8-jdk'
+            args '-v /cache:/cache'
+        }
+    }
 
     environment {
         GRADLE_USER_HOME = '/cache/gradle'
@@ -11,13 +16,6 @@ pipeline {
     stages {
 
         stage('Build') {
-            agent {
-                docker {
-                    image 'openjdk:8-jdk'
-                    args '-v /cache:/cache'
-                }
-            }
-
             steps {
                 script {
                     gitVars = checkout scm
@@ -31,22 +29,13 @@ pipeline {
         }
 
         stage('Test') {
-            agent {
-                docker {
-                    image 'openjdk:8-jdk'
-                    args '-v /cache:/cache'
-                }
-            }
-
             steps {
                 sh './gradlew test'
             }
         }
 
         stage('Docker Deploy Snapshot') {
-
             agent any
-
             steps {
                 sh """
                     docker build -t ${IMAGE} .
@@ -56,11 +45,8 @@ pipeline {
             }
         }
 
-
         stage('Docker Deploy Release') {
-
             agent any
-
             when {
                 expression {
                     return BRANCH == 'origin/master'
@@ -75,7 +61,6 @@ pipeline {
                 """
             }
         }
-
     }
 
 }
