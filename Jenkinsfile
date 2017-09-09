@@ -2,7 +2,7 @@ pipeline {
     agent none
 
     environment {
-        env.GRADLE_USER_HOME = "/cache/gradle"
+        env.GRADLE_USER_HOME = '/cache/gradle'
     }
 
     stages {
@@ -11,7 +11,7 @@ pipeline {
             agent {
                 docker {
                     image 'openjdk:8-jdk'
-                    args ['-v /cache:/cache']
+                    args '-v /cache:/cache'
                 }
             }
 
