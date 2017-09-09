@@ -63,7 +63,7 @@ pipeline {
 
             when {
                 expression {
-                    return $ { BRANCH } == 'origin/master'
+                    return BRANCH == 'origin/master'
                 }
             }
 
