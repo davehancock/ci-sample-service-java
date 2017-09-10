@@ -17,7 +17,6 @@ pipeline {
                     args '-v /cache:/cache'
                 }
             }
-
             steps {
                 script {
                     gitVars = checkout scm
@@ -37,7 +36,6 @@ pipeline {
                     args '-v /cache:/cache'
                 }
             }
-
             steps {
                 sh './gradlew test'
             }
@@ -61,15 +59,13 @@ pipeline {
                     return BRANCH == 'master'
                 }
             }
-
             steps {
                 sh """
-                    docker build -t ${IMAGE} .
                     docker tag ${IMAGE} ${IMAGE}:latest
                     docker push ${IMAGE}:latest
                 """
             }
         }
-    }
 
+    }
 }
