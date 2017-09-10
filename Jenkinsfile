@@ -1,11 +1,9 @@
 pipeline {
-    agent any
+    agent none
 
     environment {
         GRADLE_USER_HOME = '/cache/gradle'
-        HASH = 'unknown'
-        BRANCH = 'unknown'
-        IMAGE = 'daves125125/ci-sample-service'
+        IMAGE = 'daves125125/ci-sample-service-java'
     }
 
     stages {
@@ -18,12 +16,6 @@ pipeline {
                 }
             }
             steps {
-                script {
-                    gitVars = checkout scm
-                    HASH = gitVars["GIT_COMMIT"]
-                    BRANCH = gitVars["GIT_BRANCH"]
-                }
-
                 sh './gradlew compileJava'
                 sh './gradlew assemble'
             }
@@ -49,11 +41,14 @@ pipeline {
         stage('Deploy Snapshot') {
             agent any
             steps {
-                sh """
-                    docker build -t ${IMAGE} .
-                    docker tag ${IMAGE} ${IMAGE}:${HASH}
-                    docker push ${IMAGE}:${HASH}
-                """
+                script {
+                    def HASH = sh returnStdout: true, script: 'git rev-parse HEAD'
+                    sh """
+                        docker build -t ${IMAGE} .
+                        docker tag ${IMAGE} ${IMAGE}:${HASH}
+                        docker push ${IMAGE}:${HASH}
+                    """
+                }
                 deleteDir()
             }
         }
@@ -61,9 +56,7 @@ pipeline {
         stage('Deploy Release') {
             agent any
             when {
-                expression {
-                    return BRANCH == 'master'
-                }
+                branch 'master'
             }
             steps {
                 sh """
