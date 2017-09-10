@@ -1,5 +1,5 @@
 pipeline {
-    agent none
+    agent any
 
     environment {
         GRADLE_USER_HOME = '/cache/gradle'
@@ -54,6 +54,7 @@ pipeline {
                     docker tag ${IMAGE} ${IMAGE}:${HASH}
                     docker push ${IMAGE}:${HASH}
                 """
+                deleteDir()
             }
         }
 
@@ -71,6 +72,6 @@ pipeline {
                 """
             }
         }
-
     }
+
 }
